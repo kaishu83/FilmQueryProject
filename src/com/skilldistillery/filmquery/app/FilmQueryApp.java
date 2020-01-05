@@ -14,7 +14,7 @@ public class FilmQueryApp {
 
 	public static void main(String[] args) {
 		FilmQueryApp app = new FilmQueryApp();
-		// app.test();
+		app.test();
 		app.launch();
 	}
 
@@ -43,19 +43,25 @@ public class FilmQueryApp {
 		while (stayInLoop) {
 			msg();
 			int opt = input.nextInt();
+			Film film;
+			int filmId;
 			switch (opt) {
 			case 1:
 				System.out.println("Please enter a film ID");
-				int filmId = input.nextInt();
-				Film film = db.findFilmById(filmId);
+
 				try {
+					filmId = input.nextInt();
+					film = db.findFilmById(filmId);
 					if (film != null) {
 						System.out.println(film);
 					} else {
 						System.out.println("Film of ID " + filmId + " does not exist!");
 					}
 				} catch (Exception e) {
-					System.out.println("Please only enter a Integer!");
+					System.out.println("Need enter an Integer, try again!");
+					input.next();
+					startUserInterface(input);
+
 				}
 				break;
 
@@ -63,7 +69,14 @@ public class FilmQueryApp {
 				System.out.println("Please enter your KEYWORDS");
 				String keyWords = input.next();
 				List<Film> filmList = db.findFilmsByKeywords(keyWords);
-				System.out.println(filmList);
+				if (filmList.size() > 0) {
+					System.out.println("Here are the films we found for you!");
+					for (Film film2 : filmList) {
+						System.out.println(film2);
+					}
+				} else {
+					System.out.println("No result found!");
+				}
 				break;
 			case 3:
 				System.out.println("Goodbye");

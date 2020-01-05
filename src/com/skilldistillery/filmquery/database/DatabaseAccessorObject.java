@@ -37,7 +37,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 
-		String sql = "SELECT film.id, title, description, release_year, language.name, rental_duration, rental_rate, length, replacement_cost, rating, special_features from film join language on language_id=language.id where film.id=?";
+		String sql = "SELECT film.id, title, description, release_year, language.name, rental_duration, rental_rate, length, replacement_cost, rating, special_features from film join language on film.language_id=language.id where film.id=?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
@@ -45,7 +45,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			if (rslt.next()) {
 				film = new Film();
-				film.setId(rslt.getInt("id"));
+				film.setId(rslt.getInt("film.id"));
 				film.setTitle(rslt.getNString("title"));
 				film.setDescription(rslt.getString("description"));
 				film.setReleaseYear(rslt.getInt("release_year"));
@@ -56,6 +56,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReplacementCost(rslt.getDouble("replacement_cost"));
 				film.setRating(rslt.getString("rating"));
 				film.setSpecialFeatures(rslt.getString("special_features"));
+				film.setActorList(findActorsByFilmId(filmId));
 
 			}
 			rslt.close();
@@ -91,9 +92,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				actor.setFirstName(rslt.getString("first_name"));
 				actor.setLastName(rslt.getString("last_name"));
 			}
-			rslt.close();
-			stmt.close();
-			conn.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -118,26 +116,23 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		String sql = "select actor.id, actor.first_name, actor.last_name from actor join film_actor on actor.id=film_actor.actor_id join film on film.id=film_actor.film_id where film.id=?";
 
 		try {
-			actor = new Actor();
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 
 			ResultSet rslt = stmt.executeQuery();
 			while (rslt.next()) {
-				actor.setId(rslt.getInt(1));
-				actor.setFirstName(rslt.getString(2));
-				actor.setLastName(rslt.getString(3));
+				int id = rslt.getInt(1);
+				String firstName = rslt.getString(2);
+				String lastName = rslt.getString(2);
+				actor = new Actor(id, firstName, lastName);
 				actorList.add(actor);
 
 			}
-			rslt.close();
-			stmt.close();
-			conn.close();
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return actorList;
 	}
 
@@ -153,7 +148,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 
-		String sql = "SELECT film.id, title, description, release_year,language.name , rental_duration, rental_rate,length, replacement_cost, rating, special_features from film join language where title like ? or description like ?";
+		String sql = "SELECT film.id, title, description, release_year,language.name , rental_duration, rental_rate,length, replacement_cost, rating, special_features from film join language on film.language_id=language.id where title like ? or description like ?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%" + keyWords + "%");
@@ -162,7 +157,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			while (rslt.next()) {
 				film = new Film();
-				film.setId(rslt.getInt("id"));
+				film.setId(rslt.getInt("film.id"));
 				film.setTitle(rslt.getNString("title"));
 				film.setDescription(rslt.getString("description"));
 				film.setReleaseYear(rslt.getInt("release_year"));
@@ -173,6 +168,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReplacementCost(rslt.getDouble("replacement_cost"));
 				film.setRating(rslt.getString("rating"));
 				film.setSpecialFeatures(rslt.getString("special_features"));
+				film.setActorList(findActorsByFilmId(film.getId()));
 
 				filmList.add(film);
 
