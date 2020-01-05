@@ -1,5 +1,7 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.List;
+
 public class Film {
 
 	private int id;
@@ -8,11 +10,21 @@ public class Film {
 	private int releaseYear;
 	private int languageID;
 	private int rentalDuration;
-	private double rate;
+	private double rentalRate;
 	private int length;
 	private double replacementCost;
 	private String rating;
-	private String specialFeature;
+	private String specialFeatures;
+
+	private List<Actor> actorList;
+
+	public List<Actor> getActorList() {
+		return actorList;
+	}
+
+	public void setActorList(List<Actor> actorList) {
+		this.actorList = actorList;
+	}
 
 	public int getId() {
 		return id;
@@ -62,12 +74,12 @@ public class Film {
 		this.rentalDuration = rentalDuration;
 	}
 
-	public double getRate() {
-		return rate;
+	public double getRentalRate() {
+		return rentalRate;
 	}
 
-	public void setRate(double rate) {
-		this.rate = rate;
+	public void setRentalRate(double rate) {
+		this.rentalRate = rate;
 	}
 
 	public int getLength() {
@@ -94,12 +106,12 @@ public class Film {
 		this.rating = rating;
 	}
 
-	public String getSpecialFeature() {
-		return specialFeature;
+	public String getSpecialFeatures() {
+		return specialFeatures;
 	}
 
-	public void setSpecialFeature(String specialFeature) {
-		this.specialFeature = specialFeature;
+	public void setSpecialFeatures(String specialFeatures) {
+		this.specialFeatures = specialFeatures;
 	}
 
 	@Override
@@ -111,14 +123,14 @@ public class Film {
 		result = prime * result + languageID;
 		result = prime * result + length;
 		long temp;
-		temp = Double.doubleToLongBits(rate);
+		temp = Double.doubleToLongBits(rentalRate);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
 		result = prime * result + releaseYear;
 		result = prime * result + rentalDuration;
 		temp = Double.doubleToLongBits(replacementCost);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((specialFeature == null) ? 0 : specialFeature.hashCode());
+		result = prime * result + ((specialFeatures == null) ? 0 : specialFeatures.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -143,7 +155,7 @@ public class Film {
 			return false;
 		if (length != other.length)
 			return false;
-		if (Double.doubleToLongBits(rate) != Double.doubleToLongBits(other.rate))
+		if (Double.doubleToLongBits(rentalRate) != Double.doubleToLongBits(other.rentalRate))
 			return false;
 		if (rating == null) {
 			if (other.rating != null)
@@ -156,10 +168,10 @@ public class Film {
 			return false;
 		if (Double.doubleToLongBits(replacementCost) != Double.doubleToLongBits(other.replacementCost))
 			return false;
-		if (specialFeature == null) {
-			if (other.specialFeature != null)
+		if (specialFeatures == null) {
+			if (other.specialFeatures != null)
 				return false;
-		} else if (!specialFeature.equals(other.specialFeature))
+		} else if (!specialFeatures.equals(other.specialFeatures))
 			return false;
 		if (title == null) {
 			if (other.title != null)
@@ -182,18 +194,19 @@ public class Film {
 		this.releaseYear = releaseYear;
 		this.languageID = languageID;
 		this.rentalDuration = rentalDuration;
-		this.rate = rate;
+		this.rentalRate = rate;
 		this.length = length;
 		this.replacementCost = replacementCost;
 		this.rating = rating;
-		this.specialFeature = specialFeature;
+		this.specialFeatures = specialFeature;
 	}
 
 	@Override
 	public String toString() {
 		return "Film [id=" + id + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear
-				+ ", languageID=" + languageID + ", rentalDuration=" + rentalDuration + ", rate=" + rate + ", length="
-				+ length + ", replacementCost=" + replacementCost + ", rating=" + rating + ", specialFeature="
-				+ specialFeature + "]";
+				+ ", languageID=" + languageID + ", rentalDuration=" + rentalDuration + ", rentalRate=" + rentalRate
+				+ ", length=" + length + ", replacementCost=" + replacementCost + ", rating=" + rating
+				+ ", specialFeatures=" + specialFeatures + ", actorList=" + actorList + "]";
 	}
+
 }
