@@ -11,6 +11,10 @@ import com.skilldistillery.filmquery.entities.Film;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 
+	private final String user = "student";
+	private final String pass = "student";
+	private final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
+	private static Connection conn;
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -23,18 +27,23 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) {
 
-		String user = "student";
-		String pass = "student";
-		String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
-		Connection conn = DriverManager.getConnection(URL, user, pass);
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		String sql = "";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Film film = null;
-
-		
-		git git
-		String sql = "";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-
 		return film;
 	}
 
