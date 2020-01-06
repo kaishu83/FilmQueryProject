@@ -59,9 +59,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setActorList(findActorsByFilmId(filmId));
 
 			}
-			rslt.close();
-			stmt.close();
-			conn.close();
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
